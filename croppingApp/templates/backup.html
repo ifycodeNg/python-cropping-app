@@ -45,20 +45,17 @@
         $image.cropper("zoom", -0.1);
       });
 
-      /* SCRIPT TO COLLECT THE DATA  */
+      /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
       $(".js-crop-and-upload").click(function () {
         var cropData = $image.cropper("getData");
+        console.log(cropData)
         $("#x").val(cropData["x"]);
         $("#y").val(cropData["y"]);
         $("#height").val(cropData["height"]);
         $("#width").val(cropData["width"]);
-        $("#modalCrop").modal("hide");
+        $("#formUpload").submit();
       });
 
-         /* SCRIPT TO POST TO THE SERVER */
-      $(".submit").click(function () {
-        $("#formUpload").submit();
-      })
     });
   </script>
 {% endblock %}
@@ -81,9 +78,6 @@
     <input type="text" name="height" id="height" hidden>
     <input type="text" name="width" id="width" hidden> 
 
-    <button class="submit">
-      Upload
-    </button>
   </form>
 
   <!-- MODAL TO CROP THE IMAGE -->
@@ -109,7 +103,7 @@
             </button>
           </div>
           <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
-          <button type="button" class="btn btn-primary js-crop-and-upload">Crop</button>
+          <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
         </div>
       </div>
     </div>
