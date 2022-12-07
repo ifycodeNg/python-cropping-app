@@ -7,7 +7,7 @@
       /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
       $("#id_file").change(function () {
         if (this.files && this.files[0]) {
-          var reader = new FileReader();
+          let reader = new FileReader();
           reader.onload = function (e) {
             $("#image").attr("src", e.target.result);
             $("#modalCrop").modal("show");
@@ -17,15 +17,15 @@
       });
 
       /* SCRIPTS TO HANDLE THE CROPPER BOX */
-      var $image = $("#image");
-      var cropBoxData;
-      var canvasData;
+      let $image = $("#image");
+      let cropBoxData;
+      let canvasData;
       $("#modalCrop").on("shown.bs.modal", function () {
         $image.cropper({
           viewMode: 1,
           aspectRatio: 1/1,
-          minCropBoxWidth: 400,
-          minCropBoxHeight: 400,
+          minCropBoxWidth: 200,
+          minCropBoxHeight: 200,
           ready: function () {
             $image.cropper("setCanvasData", canvasData);
             $image.cropper("setCropBoxData", cropBoxData);
@@ -44,12 +44,19 @@
       $(".js-zoom-out").click(function () {
         $image.cropper("zoom", -0.1);
       });
+      $(".js-crop-side").click(function(e, instance){
+      $image.cropper('rotate', -90);
+      })
+      $(".js-crop-sidePos").click(function(e, instance){
+        $image.cropper('rotate', 90);
+       })
 
-      /* SCRIPT TO COLLECT THE DATA  */
+      /* SCRIPT TO COLLECT THE IMAGE DATA  */
       $(".js-crop-and-upload").click(function () {
-        var cropData = $image.cropper("getData");
+        let cropData = $image.cropper("getData");
         $("#x").val(cropData["x"]);
         $("#y").val(cropData["y"]);
+        $("#rotation").val(cropData["rotate"]);
         $("#height").val(cropData["height"]);
         $("#width").val(cropData["width"]);
         $("#modalCrop").modal("hide");
@@ -80,6 +87,7 @@
     <input type="text" name="y" id="y" hidden>
     <input type="text" name="height" id="height" hidden>
     <input type="text" name="width" id="width" hidden> 
+    <input type="text" name="rotation" id="rotation" hidden> 
 
     <button class="submit">
       Upload
@@ -107,8 +115,18 @@
             <button type="button" class="btn btn-default js-zoom-out">
               <span class="glyphicon glyphicon-zoom-out"></span>
             </button>
+            <button type="button" class="btn btn-default js-crop-sidePos ">
+              <span>
+                <i class="fa fa-rotate-right" style="font-size:16px"></i>
+              </span>
+            </button>
+            <button type="button" class="btn btn-default js-crop-side ">
+              <span>
+                <i class="fa fa-rotate-left" style="font-size:16px"></i>
+              </span>
+            </button>
           </div>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
+          <button type="button" class="btn btn-default js-crop-and-upload" data-dismiss="modal">Nevermind</button>
           <button type="button" class="btn btn-primary js-crop-and-upload">Crop</button>
         </div>
       </div>
